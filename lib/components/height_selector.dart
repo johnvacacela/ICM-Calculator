@@ -22,7 +22,10 @@ class HeightSelectorState extends State<HeightSelector> {
         ),
         child: Column(
           children: [
-            Text("Altura".toUpperCase(), style: TextStyles.bodyText,),
+            Padding(
+              padding: const EdgeInsets.only(top:8),
+              child: Text("Altura".toUpperCase(), style: TextStyles.bodyText,),
+            ),
             Text("${selectedHeight.toStringAsFixed(0)} cm", style: TextStyle(
               color: Colors.white,
               fontSize: 38,
