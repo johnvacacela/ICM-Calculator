@@ -44,13 +44,37 @@ class IMCResultScreen extends StatelessWidget {
                     color: AppColors.backgroundComponent,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: 
-                  Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("NORMAL", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600, color: Colors.white),),
-                      Text(imcResult.toStringAsFixed(2) , style: TextStyle(fontSize: 76, color: Colors.white, fontWeight: FontWeight.bold),),
-                      Text("Descripción", style: TextStyle(fontSize: 26, fontWeight: FontWeight.w400, color: Colors.white))
+                      Text(
+                        getTitleByIMC(imcResult),
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          color: getColorByIMC(imcResult),
+                        ),
+                      ),
+                      Text(
+                        imcResult.toStringAsFixed(2),
+                        style: TextStyle(
+                          fontSize: 76,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getDescriptionByIMC(imcResult),
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -60,7 +84,9 @@ class IMCResultScreen extends StatelessWidget {
               height: 60,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 style: ButtonStyle(
                   shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
@@ -76,5 +102,34 @@ class IMCResultScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color getColorByIMC(double imcResult) {
+    return switch (imcResult) {
+      < 18.5 => Colors.blue, //IMC bajo
+      < 24.9 => Colors.green, //IMC normal
+      < 29.9 => Colors.orange, //IMC sobrepeso
+      _ => Colors.red, //IMC obesidad grado 1
+    };
+  }
+
+  String getTitleByIMC(double imcResult) {
+    return switch (imcResult) {
+      < 18.5 => "Bajo peso",
+      < 24.9 => "Peso normal",
+      < 29.9 => "Sobrepeso",
+      _ => "Obesidad",
+    };
+  }
+
+  String getDescriptionByIMC(double imcResult) {
+    return switch (imcResult) {
+      < 18.5 =>
+        "Tu IMC indica que tienes un bajo peso. Es recomendable consultar a un profesional de la salud.",
+      < 24.9 => "Tu IMC está en el rango normal. ¡Buen trabajo!",
+      < 29.9 =>
+        "Tu IMC indica sobrepeso. Considera adoptar hábitos más saludables.",
+      _ => "Tu IMC indica obesidad. Es importante buscar asesoramiento médico.",
+    };
   }
 }
