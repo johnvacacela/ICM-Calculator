@@ -3,14 +3,20 @@ import 'package:imc_calculator/core/text_styles.dart';
 import 'package:imc_calculator/core/app_colors.dart';
 
 class HeightSelector extends StatefulWidget {
-  const HeightSelector({super.key});
+  final double initialHeight;
+  final Function(double) onHeightChanged;
+
+  const HeightSelector({
+    super.key,
+    required this.initialHeight,
+    required this.onHeightChanged,
+  });
 
   @override
   State<HeightSelector> createState() => HeightSelectorState();
 }
 
 class HeightSelectorState extends State<HeightSelector> {
-  double selectedHeight = 170.0; // Default height in cm
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,27 +29,28 @@ class HeightSelectorState extends State<HeightSelector> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top:8),
-              child: Text("Altura".toUpperCase(), style: TextStyles.bodyText,),
+              padding: const EdgeInsets.only(top: 8),
+              child: Text("Altura".toUpperCase(), style: TextStyles.bodyText),
             ),
-            Text("${selectedHeight.toStringAsFixed(0)} cm", style: TextStyle(
-              color: Colors.white,
-              fontSize: 38,
-              fontWeight: FontWeight.bold
-            ),),
+            Text(
+              "${widget.initialHeight.toStringAsFixed(0)} cm",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 38,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Slider(
-              value: selectedHeight,
+              value: widget.initialHeight,
               onChanged: (newHeight) {
-                setState(() {
-                  selectedHeight = newHeight;
-                });
+                widget.onHeightChanged(newHeight);
               },
               min: 100,
               max: 220,
               divisions: 120, // Saltos que se puede dar!
-              label: "${selectedHeight.toStringAsFixed(0)} cm",
+              label: "${widget.initialHeight.toStringAsFixed(0)} cm",
               activeColor: AppColors.primary,
-            )
+            ),
           ],
         ),
       ),
